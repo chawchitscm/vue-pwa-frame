@@ -6,6 +6,7 @@ export default {
       dialogTitle: "",
       dialog: false,
       isDeleteDialog: false,
+      keyword: "",
       headerList: [
         {
           text: "ID",
@@ -48,7 +49,7 @@ export default {
       .get("/post/list")
       .then((response) => {
         this.postList = response.data.post_list;
-        this.showList = this.postList;
+        this.showList = this.postList.filter(post => ("deleted_user_id" in post) == false);
       })
       .catch((err) => {
         console.log(err);
@@ -60,13 +61,40 @@ export default {
      * @returns void
      */
     filterPosts() {
-      this.showList = this.postList.filter((post) => {
-        return (
-          post.title.includes(this.keyword) ||
-          post.description.includes(this.keyword) ||
-          post.created_user.includes(this.keyword)
-        );
+      if (this.keyword) {
+        this.showList = this.postList.filter((post) => {
+            this.keyword = this.keyword.toLowerCase();
+            post.title = post.title.toLowerCase();
+            post.description = post.description.toLowerCase();
+
+            return post.title.includes(this.keyword) || post.description.includes(this.keyword);
+        });     
+      } else {
+        this.showList = this.postList.filter(post => ("deleted_user_id" in post) == false);
+      }
+    },
+
+    deletePost(postId) {
+      this.$axios
+      .delete(`/delete/post/${postId}`)
+      .then(() => {
+        this.loadPosts()
+      })
+      .catch((err) => {
+        console.log(err);
       });
     },
+
+    async loadPosts() {
+      this.$axios
+      .get("/post/list")
+      .then((response) => {
+        this.postList = response.data.post_list;
+        this.showList = this.postList.filter(post => ("deleted_user_id" in post) == false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   },
 };

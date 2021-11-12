@@ -27,12 +27,26 @@ export default new Vuex.Store({
         commit("setUserData", null);
       });
     },
+    // update({commit}, credentials) {
+    //   return axios.post("/update/user", credentials).then(({ data }) => {
+    //     commit("setUserData", data);
+    // }
   },
   getters: {
     isLoggedIn: (state) => !!state.user,
+    userId: (state) => {
+      if (state.user && state.user.id) {
+        return state.user.id;
+      }
+    },
     userName: (state) => {
       if (state.user && state.user.name) {
         return state.user.name;
+      }
+    },
+    userEmail: (state) => {
+      if (state.user && state.user.email) {
+        return state.user.email;
       }
     },
   },

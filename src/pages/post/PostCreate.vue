@@ -1,0 +1,44 @@
+<template>
+  <v-card>
+    <v-card-title>
+      Post Create
+    </v-card-title>
+    <v-container>
+      <form>
+        <v-text-field
+          v-model="title"
+          :error-messages="titleErrors"
+          :counter="255"
+          label="Title"
+          required
+          @input="$v.title.$touch()"
+          @blur="$v.title.$touch()"
+        ></v-text-field>
+        <v-textarea
+          v-model="description"
+          :error-messages="descriptionErrors"
+          :counter="1000"
+          label="Description"
+          required
+          @input="$v.description.$touch()"
+          @blur="$v.description.$touch()"
+        ></v-textarea>
+        <v-btn
+          class="mt-4 mr-4"
+          color="primary"
+          @click="submit"
+        >
+          Create
+        </v-btn>
+        <v-btn 
+          to="/post/list"
+          class="mt-4"
+        >
+          Back
+        </v-btn>
+      </form>
+    </v-container>
+  </v-card>
+</template>
+<script src="../../services/post/post-create.js">
+</script>

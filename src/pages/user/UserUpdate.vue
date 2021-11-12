@@ -1,0 +1,81 @@
+<template>
+  <v-card>
+    <v-card-title>
+      Post Create
+    </v-card-title>
+    <v-container>
+      <form>
+        <v-text-field
+          v-model="name"
+          :error-messages="nameErrors"
+          :counter="255"
+          :value="name"
+          label="Name"
+          required
+          @input="$v.title.$touch()"
+          @blur="$v.title.$touch()"
+        ></v-text-field>
+        <v-text-field
+          v-model="phone"
+          :error-messages="phoneErrors"
+          :counter="15"
+          label="Phone"
+          :value="phone"
+          @input="$v.phone.$touch()"
+          @blur="$v.phone.$touch()"
+        ></v-text-field>
+        <v-textarea
+          v-model="address"
+          :error-messages="addressErrors"
+          :counter="255"
+          :value="address"
+          label="Address"
+          @input="$v.address.$touch()"
+          @blur="$v.address.$touch()"
+        ></v-textarea>
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="date"
+              label="Birthday date"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="date"
+            :active-picker.sync="activePicker"
+            :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+            min="1950-01-01"
+            :value="date"
+            @change="save"
+          ></v-date-picker>
+        </v-menu>
+        <v-btn
+          class="mt-4 mr-4"
+          color="primary"
+          @click="submit"
+        >
+          Update
+        </v-btn>
+        <v-btn 
+          to="/post/list"
+          class="mt-4"
+        >
+          Back
+        </v-btn>
+      </form>
+    </v-container>
+  </v-card>
+</template>
+<script src="../../services/user/user-update.js">
+</script>
