@@ -36,6 +36,7 @@ export default {
       name: "",
       email: "",
       password: "",
+      profile: null,
       phone: "",
       address: "",
       error: "",
@@ -100,22 +101,32 @@ export default {
     
     submit() {
       this.$v.$touch();
-
-      const user = {
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        phone: this.phone,
-        address: this.address,
-        dob: this.date
-      };
+      const profile = {
+        profile_path: this.profile
+      }
       this.$axios
-        .post(`/create/user`, user)
-        .then(() => {
-          this.error = "";
-          this.$router.push({
-            name: "user-list"
-          });
+        .post('save/profile_picture', profile)
+        .then((response) => {
+          const user = {
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            profile_path: response.data.profile_path,
+            phone: this.phone,
+            address: this.address,
+            dob: this.date
+          };
+          this.$axios
+            .post(`/create/user`, user)
+            .then(() => {
+              this.error = "";
+              this.$router.push({
+                name: "user-list"
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           console.log(err);

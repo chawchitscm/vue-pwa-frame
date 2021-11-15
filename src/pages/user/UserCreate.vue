@@ -31,6 +31,11 @@
           @input="$v.password.$touch()"
           @blur="$v.password.$touch()"
         ></v-text-field>
+        <v-file-input
+          v-model="profile"
+          accept="image/*"
+          label="Profile Image"
+        ></v-file-input>
         <v-text-field
           v-model="phone"
           :error-messages="phoneErrors"
