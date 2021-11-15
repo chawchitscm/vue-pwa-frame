@@ -1,6 +1,6 @@
 
 import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength, email } from 'vuelidate/lib/validators'
 import { mapGetters } from "vuex";
 
 export default {
@@ -10,6 +10,13 @@ export default {
     name: {
       required,
       maxLength: maxLength(255)
+    },
+    email: {
+      required,
+      email
+    },
+    password: {
+      required,
     },
     phone: {
       required,
@@ -27,6 +34,8 @@ export default {
   data() {
     return {
       name: "",
+      email: "",
+      password: "",
       phone: "",
       address: "",
       error: "",
@@ -44,13 +53,28 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["userId", "userName", "userEmail"]),
+    ...mapGetters(["userName", "userEmail"]),
     nameErrors() {
       const errors = []
       if (!this.$v.name.$dirty) 
         return errors
       !this.$v.name.maxLength && errors.push("Name must be at most 255 characters long") 
       !this.$v.name.required && errors.push("Name is required.")
+      return errors
+    },
+    emailErrors () {
+      const errors = []
+      if (!this.$v.email.$dirty)
+        return errors
+      !this.$v.email.email && errors.push('Must be valid e-mail')
+      !this.$v.email.required && errors.push('E-mail is required')
+      return errors
+    },
+    pwdErrors () {
+      const errors = []
+      if (!this.$v.password.$dirty)
+        return errors
+      !this.$v.password.required && errors.push('Password is required')
       return errors
     },
     phoneErrors() {
@@ -69,21 +93,6 @@ export default {
     },
   },
 
-  async mounted() {
-    this.$axios
-      .get("/user/list")
-      .then((response) => {
-        this.user = response.data.user_list.filter(user => user.id == this.$route.params.userId);
-        this.name = this.user[0].name;
-        this.phone = this.user[0].phone;
-        this.address = this.user[0].address;
-        this.date = new Date(Date.parse(this.user[0].dob)).toISOString().slice(0, 10);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
-
   methods: {
     save (date) {
       this.$refs.menu.save(date)
@@ -91,22 +100,19 @@ export default {
     
     submit() {
       this.$v.$touch();
-      this.$v.$touch()
+
       const user = {
         name: this.name,
+        email: this.email,
+        password: this.password,
         phone: this.phone,
         address: this.address,
         dob: this.date
       };
       this.$axios
-        .put(`/update/user/${this.$route.params.userId}`, user)
+        .post(`/create/user`, user)
         .then(() => {
           this.error = "";
-          if (this.userId == this.$route.params.userId) {
-            this.$store.dispatch("updateProfile", {
-              name: this.name !== "" ? this.name : this.userName,
-            });
-          }
           this.$router.push({
             name: "user-list"
           });

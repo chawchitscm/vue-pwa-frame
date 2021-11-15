@@ -11,6 +11,8 @@
             </div>
             <v-spacer></v-spacer>
             <div class="route-links">
+              <v-btn depressed color="primary" to="/post/list">Posts</v-btn>
+              <v-btn depressed color="primary" to="/user/list">Users</v-btn>
               <v-menu offset-y v-if="isLoggedIn">
                 <template v-slot:activator="{ on }">
                   <v-btn class="ma-2" text v-on="on">

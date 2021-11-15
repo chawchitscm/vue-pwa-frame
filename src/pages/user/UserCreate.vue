@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      User Update
+      User Create
     </v-card-title>
     <v-container>
       <form>
@@ -9,18 +9,33 @@
           v-model="name"
           :error-messages="nameErrors"
           :counter="255"
-          :value="name"
           label="Name"
           required
           @input="$v.name.$touch()"
           @blur="$v.name.$touch()"
         ></v-text-field>
         <v-text-field
+          v-model="email"
+          :error-messages="emailErrors"
+          label="E-mail"
+          required
+          @input="$v.email.$touch()"
+          @blur="$v.email.$touch()"
+        ></v-text-field>
+        <v-text-field
+          v-model="password"
+          type="password"
+          label="Password"
+          :error-messages="pwdErrors"
+          required
+          @input="$v.password.$touch()"
+          @blur="$v.password.$touch()"
+        ></v-text-field>
+        <v-text-field
           v-model="phone"
           :error-messages="phoneErrors"
           :counter="15"
           label="Phone"
-          :value="phone"
           @input="$v.phone.$touch()"
           @blur="$v.phone.$touch()"
         ></v-text-field>
@@ -28,7 +43,6 @@
           v-model="address"
           :error-messages="addressErrors"
           :counter="255"
-          :value="address"
           label="Address"
           @input="$v.address.$touch()"
           @blur="$v.address.$touch()"
@@ -65,10 +79,10 @@
           color="primary"
           @click="submit"
         >
-          Update
+          Create
         </v-btn>
         <v-btn 
-          to="/user/list"
+          to="/post/list"
           class="mt-4"
         >
           Back
@@ -77,5 +91,5 @@
     </v-container>
   </v-card>
 </template>
-<script src="../../services/user/user-update.js">
+<script src="../../services/user/user-create.js">
 </script>

@@ -15,6 +15,9 @@ export default new Vuex.Store({
     setUserData(state, userData) {
       state.user = userData;
     },
+    setUserName(state, userData) {
+      state.user.name = userData.name;
+    }
   },
   actions: {
     login({ commit }, credentials) {
@@ -27,10 +30,9 @@ export default new Vuex.Store({
         commit("setUserData", null);
       });
     },
-    // update({commit}, credentials) {
-    //   return axios.post("/update/user", credentials).then(({ data }) => {
-    //     commit("setUserData", data);
-    // }
+    updateProfile({ commit }, data) {
+      commit("setUserName", data);
+    }
   },
   getters: {
     isLoggedIn: (state) => !!state.user,

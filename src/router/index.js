@@ -8,6 +8,9 @@ import PostUpdate from "../pages/post/PostUpdate";
 import PostDetail from "../pages/post/PostDetail";
 import Profile from "../pages/user/Profile";
 import UserUpdate from "../pages/user/UserUpdate";
+import UserList from "../pages/user/UserList";
+import UserCreate from "../pages/user/UserCreate";
+import UserDetail from "../pages/user/UserDetail";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -47,6 +50,21 @@ const routes = [
     path: "/update/user/:userId",
     name: "user-update",
     component: UserUpdate,
+  },
+  {
+    path: "/user/list",
+    name: "user-list",
+    component: UserList,
+  },
+  {
+    path: "/create/user",
+    name: "user-create",
+    component: UserCreate,
+  },
+  {
+    path: "/user/:userId",
+    name: "user-detail",
+    component: UserDetail,
   },
   {
     path: "/*",
